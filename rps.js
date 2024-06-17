@@ -1,5 +1,9 @@
 const names = ["rock", "paper", "scissors"];
 
+let cpuScore= 0;
+let humanScore = 0;
+let finished = false;
+
 function getComputerChoice() {
     let choice = Math.random() * 3;
     if (choice <= 1) return 1; 
@@ -7,48 +11,73 @@ function getComputerChoice() {
     return 3;
 }
 
-function getHumanChoice() {
-    let choice = prompt("Choose: 1)Rock 2)Paper 3)Scissors");
-    if (choice == '1') return 1;
-    if (choice == '2') return 2;
-    if (choice == '3') return 3;
-    console.log("Invalid choice.");
-    return getHumanChoice();
-}
+function playRound(human_choice) {
+    if (finished) return;
 
-function playRound() {
     let cpu = getComputerChoice();
-    let human = getHumanChoice();
+    let human = human_choice;
 
-    console.log("cpu chose: " + names[cpu-1]);
-    console.log("you chose:" +  names[human-1]);
+    const cpu_html = document.querySelector("#cpu-option")
+    const human_html = document.querySelector("#human-option")
 
-    if(cpu == human) {
-        console.log("Tie. \nPlay again.");
-         return playRound();
-    }
+    cpu_html.textContent = names[cpu-1];
+    human_html.textContent = names[human-1];
+
+    let option = 2;
 
     if (cpu > human) {
-        if(cpu == 3 && human == 1) return 1;
-        return 0;
+        if(cpu == 3 && human == 1) option = 1;
+        else option = 0;
     }
 
-    if (human > cpu) {
-        if(human == 3 && cpu == 1) return 0;
-        return 1;
+    else if (human > cpu) {
+        if(human == 3 && cpu == 1) option = 0;
+        else option = 1;
+    }
+    
+    winner(option);
+    updateScore();
+
+    if(cpuScore == 5 || humanScore == 5) matchWinner();
+}
+
+function updateScore() {
+    const score = document.querySelector("#score");
+    score.textContent = "You: " + humanScore + " CPU: " + cpuScore;
+}
+
+function winner(option) {
+    const cpu_html = document.querySelector("#cpu-option")
+    const human_html = document.querySelector("#human-option")
+
+    if (option == 0) {
+        cpu_html.style.backgroundColor = "#A6EB38";
+        human_html.style.backgroundColor = "white";
+        cpuScore++;
+    }
+    else if (option == 1) {
+        human_html.style.backgroundColor = "#A6EB38";
+        cpu_html.style.backgroundColor = "white";
+        humanScore++;
+    }
+    else {
+        cpu_html.style.backgroundColor = "white";
+        human_html.style.backgroundColor = "white";
     }
 }
 
-let cpuScore= 0;
-let humanScore = 0;
+function matchWinner() {
+    const winner = document.querySelector("#winner");
+    if(cpuScore == 5) winner.textContent = "CPU Wins.";
+    else winner.textContent = "You Win!";
+    finished = true;
+}
 
-while(humanScore < 3 && cpuScore < 3) {
-    winner = playRound();
-    winner ? console.log("You win!") : console.log("Cpu Wins!");
-    winner ? humanScore++ : cpuScore++;
+const btn_rock = document.querySelector("#btn-rock");
+btn_rock.addEventListener("click", () => {playRound(1)});
 
-    console.log("Score");
-    console.log("You: " + humanScore);
-    console.log("CPU: " + cpuScore);
-} 
+const btn_paper = document.querySelector("#btn-paper");
+btn_paper.addEventListener("click", () => {playRound(2)});
 
+const btn_scissors = document.querySelector("#btn-scissors");
+btn_scissors.addEventListener("click", () => {playRound(3)});

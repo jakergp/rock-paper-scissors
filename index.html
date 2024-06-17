@@ -2,9 +2,36 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="styles.css">
     <title>rock-paper-scissors</title>
+    <script src="rps.js" defer> </script>
 </head>
 <body>
-    <script src="rps.js"> </script>
+    <h2 class="center">Rock, paper, scissors!</h2>
+    <div class="center">
+        <button id="btn-rock">Rock</button>
+        <button id="btn-paper">Paper</button>
+        <button id="btn-scissors">Scissors</button>
+    </div>
+    <div id="game">
+        <div class="game-box">
+            You:
+            <div id="human-option" class="option">
+            </div>
+        </div>    
+        <div class="game-box">
+            CPU:
+            <div id="cpu-option" class="option">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="center" id="score">
+        You: 0 CPU: 0
+    </div>
+    <h3 class="center" id="winner">
+
+    </h3>
 </body>
 </html>
